@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Slash Search",
+  "version": "0.1.0",
+  "description": "Press '/' to focus the search box on most websites.",
+  "permissions": [],
+  "host_permissions": [],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "exclude_matches": [
+        "*://*.github.com/*",
+        "*://x.com/*",
+        "*://*.x.com/*",
+        "*://twitter.com/*",
+        "*://*.twitter.com/*",
+        "*://mail.google.com/*",
+        "*://drive.google.com/*",
+        "*://docs.google.com/*",
+        "*://*.youtube.com/*"
+      ],
+      "js": ["src/content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "action": {
+    "default_title": "/ to search"
+  }
+}
+
