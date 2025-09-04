@@ -68,6 +68,71 @@ const isInViewport = (el) => {
 
 // Site-specific selectors for reliability
 const SITE_ADAPTERS = [
+  // Chrome Web Store (new experience uses shadow DOM)
+  {
+    test: (h) => /(^|\.)chromewebstore\.google\.com$/i.test(h),
+    find: () => {
+      // First try obvious light DOM cases
+      const light = pickFirstVisible([
+        "[role='search'] input[type='search']",
+        "form[role='search'] input[type='search']",
+        "input[role='searchbox']",
+        "input[type='search']",
+        "input[aria-label*='search' i]",
+        "input[placeholder*='search' i]"
+      ]);
+      if (light) return light;
+
+      // Fallback: search through open shadow roots for common patterns
+      const deep = pickFirstVisibleDeep([
+        "[role='search'] input[type='search']",
+        "form[role='search'] input[type='search']",
+        "input[role='searchbox']",
+        "input[type='search']",
+        "input[name='q']",
+        "input[name*='search' i]",
+        "input[id*='search' i]",
+        "input[class*='search' i]",
+        "input[aria-label*='search' i]",
+        "input[placeholder*='search' i]",
+        "#search, #search-box, #searchbox, #search-field, #search-query, #search-input"
+      ]);
+      return deep || null;
+    }
+  },
+  // Microsoft Edge site (Edge Add-ons pages)
+  {
+    test: (h) => /(^|\.)microsoftedge\.microsoft\.com$/i.test(h),
+    find: () => {
+      const light = pickFirstVisible([
+        "[role='search'] input[type='search']",
+        "form[role='search'] input[type='search']",
+        "input[role='searchbox']",
+        "input[type='search']",
+        "input[name='q']",
+        "input[aria-label*='search' i]",
+        "input[placeholder*='search' i]",
+        "input[placeholder*='extensions' i]"
+      ]);
+      if (light) return light;
+
+      const deep = pickFirstVisibleDeep([
+        "[role='search'] input[type='search']",
+        "form[role='search'] input[type='search']",
+        "input[role='searchbox']",
+        "input[type='search']",
+        "input[name='q']",
+        "input[name*='search' i]",
+        "input[id*='search' i]",
+        "input[class*='search' i]",
+        "input[aria-label*='search' i]",
+        "input[placeholder*='search' i]",
+        "input[placeholder*='extensions' i]",
+        "#search, #search-box, #searchbox, #search-field, #search-query, #search-input"
+      ]);
+      return deep || null;
+    }
+  },
   {
     test: (h) => /(^|\.)amazon\./i.test(h),
     selectors: [
@@ -389,6 +454,39 @@ const pickFirstVisible = (selectors) => {
     for (const n of nodes) {
       if (isVisible(n) && isSearchyInput(n)) return n;
     }
+  }
+  return null;
+};
+
+// Deep query helpers: traverse open shadow roots
+const queryAllDeepFromRoot = (root, selectors, outSet) => {
+  try {
+    for (const sel of selectors) {
+      const nodes = root.querySelectorAll ? root.querySelectorAll(sel) : [];
+      for (const n of nodes) outSet.add(n);
+    }
+    // Walk all elements in this root and descend into open shadow roots
+    const all = root.querySelectorAll ? root.querySelectorAll("*") : [];
+    for (const el of all) {
+      if (el && el.shadowRoot) {
+        queryAllDeepFromRoot(el.shadowRoot, selectors, outSet);
+      }
+    }
+  } catch (_) {
+    // ignore errors from closed roots or access issues
+  }
+};
+
+const queryAllDeep = (selectors) => {
+  const out = new Set();
+  queryAllDeepFromRoot(document, selectors, out);
+  return Array.from(out);
+};
+
+const pickFirstVisibleDeep = (selectors) => {
+  const nodes = queryAllDeep(selectors);
+  for (const n of nodes) {
+    if (isVisible(n) && isSearchyInput(n)) return n;
   }
   return null;
 };

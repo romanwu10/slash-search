@@ -16,7 +16,7 @@ Install (Firefox)
 How it works
 - Listens for the '/' key when you’re not typing in an input/textarea/contenteditable
 - Finds a likely search box via heuristics (type=search, role=searchbox, placeholder/aria-label/name hints)
-- Includes adapters for common sites like Amazon, LinkedIn, Reddit, Bilibili, SHEIN, Apple, TikTok, Pinterest, IMDb, eBay, Weather.com, Fandom, Pornhub, XVideos, XHamster, XNXX, AliExpress, ePorner, Home Depot, Realtor.ca, Costco, MeteoMedia, Wikipedia, Stack Overflow
+- Includes adapters for common sites like Amazon, LinkedIn, Reddit, Bilibili, SHEIN, Apple, TikTok, Pinterest, IMDb, eBay, Weather.com, Fandom, Pornhub, XVideos, XHamster, XNXX, AliExpress, ePorner, Home Depot, Realtor.ca, Costco, MeteoMedia, Wikipedia, Stack Overflow, Chrome Web Store, Microsoft Edge site
 - Focuses and selects the input so you can type immediately
 
 Notes
