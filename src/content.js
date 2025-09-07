@@ -171,13 +171,23 @@ const SITE_ADAPTERS = [
   },
   // SHEIN
   {
-    test: (h) => /(^|\.)shein\.com$/i.test(h),
+    test: (h) => /(^|\.)shein\./i.test(h),
     selectors: [
       "input#searchInput",
       "input[name='keywords']",
       "input[name='q']",
       "input[type='search']",
       "input[placeholder*='Search' i]"
+    ]
+  },
+  // Kuaishou (快手)
+  {
+    test: (h) => /(^|\.)kuaishou\.com$/i.test(h),
+    selectors: [
+      "input[type='search']",
+      "form[role='search'] input[type='search']",
+      "input[placeholder*='搜索']",
+      "input[aria-label*='搜索']"
     ]
   },
   // Apple (may need to open the search UI first)
@@ -210,6 +220,16 @@ const SITE_ADAPTERS = [
       "input[data-e2e='search-user-input']",
       "form[role='search'] input[type='search']",
       "input[placeholder*='Search' i]"
+    ]
+  },
+  // Douyin (抖音)
+  {
+    test: (h) => /(^|\.)douyin\.com$/i.test(h),
+    selectors: [
+      "input[type='search']",
+      "form[role='search'] input[type='search']",
+      "input[placeholder*='搜索']",
+      "input[aria-label*='搜索']"
     ]
   },
   // Pinterest
@@ -254,6 +274,29 @@ const SITE_ADAPTERS = [
       "input[name='q']",
       "input[type='search']",
       "header input[placeholder*='Search' i]"
+    ]
+  },
+  // JD.com (京东)
+  {
+    test: (h) => /(^|\.)jd\.com$/i.test(h),
+    selectors: [
+      "#key",
+      "input#key",
+      "input[name='keyword']",
+      "input[type='search']",
+      "form[role='search'] input[type='search']"
+    ]
+  },
+  // Taobao (淘宝)
+  {
+    test: (h) => /(^|\.)taobao\.com$/i.test(h),
+    selectors: [
+      "#q",
+      "input#q",
+      "input[name='q']",
+      "input[type='search']",
+      "form[role='search'] input[type='search']",
+      "input[placeholder*='搜索']"
     ]
   },
   // Home Depot
@@ -342,6 +385,16 @@ const SITE_ADAPTERS = [
       "input[name='search']",
       "input[type='search']",
       "header input[placeholder*='Search' i]"
+    ]
+  },
+  // Xiaohongshu (小红书 / RED)
+  {
+    test: (h) => /(^|\.)xiaohongshu\.com$/i.test(h),
+    selectors: [
+      "input[type='search']",
+      "form[role='search'] input[type='search']",
+      "input[placeholder*='搜索']",
+      "input[aria-label*='搜索']"
     ]
   },
   // XVideos
