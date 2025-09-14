@@ -100,6 +100,28 @@ const SITE_ADAPTERS = [
       return deep || null;
     }
   },
+  // ColaManga
+  {
+    test: (h) => /(^|\.)colamanga\.com$/i.test(h),
+    find: () => {
+      const queryInput = () =>
+        document.querySelector(
+          ".fed-navs-search input.fed-navs-input[type='search'], .fed-pops-search input[type='search'], input.fed-navs-input[type='search'], input[placeholder*='搜索']"
+        );
+      let input = queryInput();
+      if (input && isVisible(input)) return input;
+      const opener = document.querySelector(
+        "a.fed-navs-button.fed-icon-sousuo, .fed-navs-button.fed-icon-sousuo"
+      );
+      if (opener) {
+        try { opener.click(); } catch (_) {}
+        void document.body.offsetHeight;
+        input = queryInput();
+        if (input && isVisible(input)) return input;
+      }
+      return input && isSearchyInput(input) ? input : null;
+    }
+  },
   // Microsoft Edge site (Edge Add-ons pages)
   {
     test: (h) => /(^|\.)microsoftedge\.microsoft\.com$/i.test(h),
